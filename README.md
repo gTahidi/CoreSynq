@@ -62,36 +62,3 @@ docker-compose up --build
 docker build -t coresynq-landing .
 docker run -p 8080:80 coresynq-landing
 ```
-
-## ☁️ Coolify Deployment
-
-This project is optimized for Coolify deployment:
-
-1. **Repository**: Connect your GitHub repository
-2. **Build Pack**: Will auto-detect as Astro application
-3. **Build Directory**: Root directory (`/`)
-4. **Port**: 80 (configured in Dockerfile)
-
-### Coolify Configuration
-
-- **Framework**: Astro
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-- **Port**: 80
-
-## 🎨 Design System
-
-- **Typography**: Inter font family with reduced sizes for professional look
-- **Colors**: Pastel blue (#f0f7ff) and green (#f1f8f1) accents
-- **Layout**: Apple-style minimalism with generous white space
-- **Animations**: Scroll-reveal and interactive node graphs
-
-## 📊 Content Sections
-
-- **Hero**: Video background with core value proposition
-- **Features**: Satellite-verified ESG, GRI/SASB alignment, real-time tracking
-- **Case Study**: EcoSteel Corp tracking example with interactive nodes
-- **Metrics**: GHG emissions, energy, water, and waste tracking
-- **Frameworks**: GRI, SASB, MSCI, and Sustainalytics integration
-- **Impact Demo**: Animated ESG score visualization
-- **Waitlist**: Lead generation with social proof
