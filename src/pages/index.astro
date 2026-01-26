@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.svelte';
+import Hero from '../components/Hero.svelte';
+import CaseStudy from '../components/CaseStudy.svelte';
+import Metrics from '../components/Metrics.svelte';
+import DynamicNodes from '../components/DynamicNodes.svelte';
+import Frameworks from '../components/Frameworks.svelte';
+import Features from '../components/Features.svelte';
+import ImpactDemo from '../components/ImpactDemo.svelte';
+import Waitlist from '../components/Waitlist.svelte';
+import '../styles/global.css';
+---
+
+<Layout title="Coresynq - Intelligence for the Green Economy">
+	<Navbar client:load />
+	<main>
+		<Hero client:load />
+		<div data-reveal><CaseStudy client:visible /></div>
+		<div data-reveal><Metrics client:visible /></div>
+		<div data-reveal><DynamicNodes client:visible /></div>
+		<div data-reveal><Frameworks client:visible /></div>
+		<div data-reveal><Features client:visible /></div>
+		<div data-reveal><ImpactDemo client:visible /></div>
+		<div data-reveal><Waitlist client:visible /></div>
+	</main>
+</Layout>
+
+<script>
+	const observerOptions = {
+		threshold: 0.1,
+		rootMargin: '0px 0px -50px 0px'
+	};
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				entry.target.setAttribute('data-reveal', 'visible');
+			}
+		});
+	}, observerOptions);
+
+	document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
