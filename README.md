@@ -1,16 +1,97 @@
-# React + Vite
+# CoreSynq Landing Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern landing page for CoreSynq ESG platform built with Astro + Svelte.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Astro + Svelte**: Modern static site generation with reactive components
+- **Video Background**: Dynamic hero section with background video
+- **Interactive Animations**: Node graph visualization and scroll-reveal effects
+- **ESG Content**: Comprehensive metrics, frameworks, and case studies
+- **Docker Ready**: Containerized for easy deployment
+- **Coolify Compatible**: Optimized for Coolify platform deployment
 
-## React Compiler
+## 🏗️ Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```text
+/
+├── public/
+│   ├── bv.mp4              # Hero background video
+│   └── favicon.svg
+├── src/
+│   ├── components/         # Svelte components
+│   │   ├── Hero.svelte
+│   │   ├── DynamicNodes.svelte
+│   │   ├── Features.svelte
+│   │   ├── CaseStudy.svelte
+│   │   ├── Metrics.svelte
+│   │   ├── Frameworks.svelte
+│   │   ├── ImpactDemo.svelte
+│   │   ├── Waitlist.svelte
+│   │   └── Navbar.svelte
+│   ├── layouts/
+│   │   └── Layout.astro
+│   ├── pages/
+│   │   └── index.astro
+│   └── styles/
+│       └── global.css
+├── Dockerfile
+├── docker-compose.yml
+└── .coolify                # Coolify deployment config
+```
 
-## Expanding the ESLint configuration
+## 🧞 Commands
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`     |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+
+## 🐳 Docker Deployment
+
+### Local Development
+```bash
+docker-compose up --build
+# Access at http://localhost:8080
+```
+
+### Production Build
+```bash
+docker build -t coresynq-landing .
+docker run -p 8080:80 coresynq-landing
+```
+
+## ☁️ Coolify Deployment
+
+This project is optimized for Coolify deployment:
+
+1. **Repository**: Connect your GitHub repository
+2. **Build Pack**: Will auto-detect as Astro application
+3. **Build Directory**: Root directory (`/`)
+4. **Port**: 80 (configured in Dockerfile)
+
+### Coolify Configuration
+
+- **Framework**: Astro
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Port**: 80
+
+## 🎨 Design System
+
+- **Typography**: Inter font family with reduced sizes for professional look
+- **Colors**: Pastel blue (#f0f7ff) and green (#f1f8f1) accents
+- **Layout**: Apple-style minimalism with generous white space
+- **Animations**: Scroll-reveal and interactive node graphs
+
+## 📊 Content Sections
+
+- **Hero**: Video background with core value proposition
+- **Features**: Satellite-verified ESG, GRI/SASB alignment, real-time tracking
+- **Case Study**: EcoSteel Corp tracking example with interactive nodes
+- **Metrics**: GHG emissions, energy, water, and waste tracking
+- **Frameworks**: GRI, SASB, MSCI, and Sustainalytics integration
+- **Impact Demo**: Animated ESG score visualization
+- **Waitlist**: Lead generation with social proof

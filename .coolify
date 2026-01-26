@@ -1,0 +1,24 @@
+{
+  "name": "CoreSynq Landing",
+  "description": "Astro + Svelte landing page for CoreSynq ESG platform",
+  "type": "application",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".",
+    "buildArgs": {},
+    "secrets": []
+  },
+  "deploy": {
+    "port": 80,
+    "healthcheck": {
+      "path": "/",
+      "port": 80,
+      "interval": 30,
+      "timeout": 10,
+      "retries": 3
+    }
+  },
+  "environment": {
+    "NODE_ENV": "production"
+  }
+}
