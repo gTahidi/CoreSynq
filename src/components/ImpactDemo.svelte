@@ -1,6 +1,6 @@
 <script>
-    import { onMount } from 'svelte';
-    
+    import { onMount } from "svelte";
+
     let score = 0;
     let observer;
     let element;
@@ -9,7 +9,7 @@
         observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
                 const interval = setInterval(() => {
-                    score = (score < 94 ? score + 1 : 94);
+                    score = score < 94 ? score + 1 : 94;
                     if (score >= 94) clearInterval(interval);
                 }, 20);
                 observer.disconnect();
@@ -25,17 +25,22 @@
     <div class="demo-container">
         <div class="demo-text">
             <h2>Visualize Your Impact</h2>
-            <p>See how real-time green energy adoption directly correlates with your objective ESG score.</p>
+            <p>
+                See how real-time green energy adoption directly correlates with
+                your objective ESG score.
+            </p>
         </div>
         <div class="demo-visual">
             <div class="score-circle">
                 <svg viewBox="0 0 36 36" class="circular-chart">
-                    <path class="circle-bg"
+                    <path
+                        class="circle-bg"
                         d="M18 2.0845
                         a 15.9155 15.9155 0 0 1 0 31.831
                         a 15.9155 15.9155 0 0 1 0 -31.831"
                     />
-                    <path class="circle"
+                    <path
+                        class="circle"
                         stroke-dasharray={`${score}, 100`}
                         d="M18 2.0845
                         a 15.9155 15.9155 0 0 1 0 31.831
@@ -53,7 +58,8 @@
 
 <style>
     .impact-demo {
-        background-color: #ffffff;
+        background-color: var(--page-bg);
+        padding: 120px 24px;
     }
 
     .demo-container {
@@ -63,9 +69,10 @@
         max-width: 1000px;
         margin: 0 auto;
         gap: 60px;
-        background: #fafafa;
+        background: var(--bg-color);
         padding: 80px;
-        border-radius: 32px;
+        border-radius: var(--border-radius-card);
+        box-shadow: var(--shadow-extruded);
     }
 
     .demo-text {
@@ -73,6 +80,8 @@
     }
 
     .demo-text h2 {
+        font-family: var(--font-display);
+        color: var(--text-primary);
         font-size: 32px;
         font-weight: 800;
         line-height: 1.1;
@@ -96,10 +105,10 @@
         position: relative;
         width: 280px;
         height: 280px;
-        background: #ffffff;
+        background: var(--bg-color);
         border-radius: 50%;
         padding: 30px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        box-shadow: var(--shadow-extruded);
     }
 
     .circular-chart {
@@ -134,7 +143,8 @@
         font-size: 48px;
         font-weight: 800;
         line-height: 1;
-        color: #1d1d1f;
+        color: var(--text-primary);
+        font-family: var(--font-display);
         letter-spacing: -0.04em;
     }
 

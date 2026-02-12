@@ -1,33 +1,33 @@
 <script>
     const metrics = [
-        { 
-            title: "Carbon Footprint (GHG)", 
+        {
+            title: "Carbon Footprint (GHG)",
             desc: "Scope 1, 2, and 3 emissions tracking using satellite-verified sensor data.",
             value: "CO₂e Tons",
             icon: "💨",
-            color: "#fee2e2"
+            color: "#fee2e2",
         },
-        { 
-            title: "Energy Intensity", 
+        {
+            title: "Energy Intensity",
             desc: "Real-time renewable vs. fossil fuel mix verification via grid API.",
             value: "% Renewable",
             icon: "⚡",
-            color: "#fef3c7"
+            color: "#fef3c7",
         },
-        { 
-            title: "Water Stewardship", 
+        {
+            title: "Water Stewardship",
             desc: "Freshwater withdrawal and recycling efficiency monitoring.",
             value: "m³ / Unit",
             icon: "💧",
-            color: "#e0f2fe"
+            color: "#e0f2fe",
         },
-        { 
-            title: "Circular Waste", 
+        {
+            title: "Circular Waste",
             desc: "Total waste generation and high-precision recycling rate audits.",
             value: "% Recycled",
             icon: "♻️",
-            color: "#dcfce7"
-        }
+            color: "#dcfce7",
+        },
     ];
 </script>
 
@@ -35,13 +35,21 @@
     <div class="metrics-header">
         <span class="badge">Environmental Pillar</span>
         <h2>Deep Intelligence Metrics</h2>
-        <p>Moving beyond basic disclosure to rigorous, data-driven performance indicators.</p>
+        <p>
+            Moving beyond basic disclosure to rigorous, data-driven performance
+            indicators.
+        </p>
     </div>
 
     <div class="grid-container">
         {#each metrics as metric}
             <div class="metric-card">
-                <div class="metric-icon" style="background: {metric.color}">{metric.icon}</div>
+                <div
+                    class="metric-icon neumorphic-inset"
+                    style="background: {metric.color}"
+                >
+                    {metric.icon}
+                </div>
                 <div class="metric-content">
                     <h3>{metric.title}</h3>
                     <p>{metric.desc}</p>
@@ -57,8 +65,8 @@
 
 <style>
     .metrics-grid {
-        background: #fafafa;
-        padding: 100px 24px;
+        background: var(--page-bg);
+        padding: 120px 24px;
     }
 
     .metrics-header {
@@ -86,11 +94,14 @@
         font-weight: 800;
         margin-bottom: 12px;
         letter-spacing: -0.02em;
+        font-family: var(--font-display);
+        color: var(--text-primary);
     }
 
     .metrics-header p {
         font-size: 16px;
-        color: #86868b;
+        color: var(--text-secondary);
+        font-family: var(--font-body);
     }
 
     .grid-container {
@@ -102,16 +113,17 @@
     }
 
     .metric-card {
-        background: white;
+        background: var(--card-bg);
         padding: 32px;
-        border-radius: 24px;
-        border: 1px solid rgba(0,0,0,0.03);
+        border-radius: var(--border-radius-card);
+        border: none;
+        box-shadow: var(--shadow-extruded);
         transition: all 0.3s ease;
     }
 
     .metric-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        box-shadow: var(--shadow-extruded-hover);
     }
 
     .metric-icon {
@@ -129,13 +141,16 @@
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 8px;
+        color: var(--text-primary);
+        font-family: var(--font-display);
     }
 
     .metric-content p {
         font-size: 14px;
-        color: #86868b;
+        color: var(--text-secondary);
         line-height: 1.5;
         margin-bottom: 20px;
+        font-family: var(--font-body);
     }
 
     .metric-meta {
@@ -143,19 +158,19 @@
         justify-content: space-between;
         align-items: center;
         padding-top: 16px;
-        border-top: 1px solid #f5f5f7;
+        border-top: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
     }
 
     .unit-label {
         font-size: 11px;
         font-weight: 600;
-        color: #86868b;
+        color: var(--text-secondary);
         text-transform: uppercase;
     }
 
     .unit-value {
         font-size: 12px;
         font-weight: 700;
-        color: #1d1d1f;
+        color: var(--text-primary);
     }
 </style>

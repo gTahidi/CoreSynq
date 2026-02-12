@@ -2,10 +2,16 @@
     <div class="waitlist-container">
         <div class="waitlist-content">
             <h2>Join the Green Revolution</h2>
-            <p>Be the first to access Coresynq and transform your ESG strategy.</p>
+            <p>
+                Be the first to access Coresynq and transform your ESG strategy.
+            </p>
 
             <form class="waitlist-form" on:submit|preventDefault>
-                <input type="email" placeholder="Enter your email address" required />
+                <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    required
+                />
                 <button type="submit" class="btn-primary">Join Waitlist</button>
             </form>
 
@@ -34,14 +40,21 @@
 
 <style>
     .waitlist {
-        background-color: #ffffff;
-        padding: 100px 24px 60px;
+        background-color: var(--page-bg);
+        padding: 120px 24px 60px;
         max-width: none;
     }
 
     .waitlist-container {
         max-width: 900px;
         margin: 0 auto;
+        background: var(
+            --card-bg
+        ); /* Use card bg for the inner container if desired, or transparent? */
+        /* Let's make the container a card for focus */
+        padding: 80px 40px;
+        border-radius: var(--border-radius-card);
+        box-shadow: var(--shadow-extruded);
     }
 
     .waitlist-content {
@@ -55,32 +68,43 @@
         margin-bottom: 16px;
         letter-spacing: -0.03em;
         line-height: 1.1;
+        font-family: var(--font-display);
+        color: var(--text-primary);
     }
 
     .waitlist-content p {
         font-size: 15px;
-        color: #86868b;
+        color: var(--text-secondary);
         margin-bottom: 32px;
+        font-family: var(--font-body);
     }
 
     .waitlist-form {
         display: flex;
         gap: 12px;
-        max-width: 400px;
+        max-width: 480px;
         margin: 0 auto 32px;
     }
 
     .waitlist-form input {
         flex: 1;
-        padding: 12px 16px;
-        border-radius: 40px;
-        border: 1px solid #d2d2d7;
+        padding: 16px 24px;
+        border-radius: var(--border-radius-btn);
+        border: none;
         font-size: 14px;
         outline: none;
+        background: var(
+            --bg-color
+        ); /* Inner input uses bg/card color? No, inputs usually inset */
+        background: var(--page-bg); /* Lighter than card? */
+        box-shadow: var(--shadow-inset-deep);
+        color: var(--text-primary);
     }
 
     .waitlist-form input:focus {
-        border-color: #0071e3;
+        box-shadow:
+            var(--shadow-inset-deep),
+            0 0 0 2px var(--accent-light);
     }
 
     .social-proof {
@@ -93,7 +117,7 @@
     .social-proof p {
         font-size: 14px;
         font-weight: 600;
-        color: #86868b;
+        color: var(--text-secondary);
     }
 
     .avatars {
@@ -105,7 +129,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        border: 2px solid #ffffff;
+        border: 2px solid var(--card-bg);
         margin-left: -12px;
         background: #f5f5f7;
     }
@@ -118,6 +142,7 @@
         margin-left: 12px;
         font-size: 14px;
         font-weight: 700;
+        color: var(--text-primary);
     }
 
     .footer-links {
@@ -125,17 +150,19 @@
         justify-content: space-between;
         align-items: center;
         padding-top: 48px;
-        border-top: 1px solid #f5f5f7;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .brand {
         font-size: 22px;
         font-weight: 800;
         letter-spacing: -0.02em;
+        font-family: var(--font-display);
+        color: var(--text-primary);
     }
 
     .links a {
-        color: #86868b;
+        color: var(--text-secondary);
         text-decoration: none;
         margin-left: 24px;
         font-size: 14px;
@@ -143,7 +170,7 @@
 
     .copyright {
         font-size: 13px;
-        color: #86868b;
+        color: var(--text-secondary);
     }
 
     @media (max-width: 700px) {

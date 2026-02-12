@@ -1,3 +1,7 @@
+<script>
+    let y = 0;
+</script>
+
 <nav class="navbar" class:scrolled={y > 50}>
     <div class="nav-container">
         <div class="logo">Coresynq</div>
@@ -12,10 +16,6 @@
 
 <svelte:window bind:scrollY={y} />
 
-<script>
-    let y = 0;
-</script>
-
 <style>
     .navbar {
         position: fixed;
@@ -29,23 +29,32 @@
     }
 
     .navbar.scrolled {
-        padding: 16px 0;
-        background: rgba(255, 255, 255, 0.8);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 20px 0;
+        background: rgba(
+            226,
+            230,
+            228,
+            0.85
+        ); /* Match new var(--bg-color) #E2E6E4 */
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        border-bottom: none;
     }
 
     .nav-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 24px;
+        padding: 0 32px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        height: 100%;
     }
 
     .logo {
-        font-size: 18px;
+        font-family: var(--font-display);
+        font-size: 20px;
         font-weight: 800;
         color: white;
         letter-spacing: -0.02em;
@@ -53,7 +62,7 @@
     }
 
     .scrolled .logo {
-        color: #1d1d1f;
+        color: var(--text-primary);
     }
 
     .nav-links {
@@ -95,8 +104,8 @@
     }
 
     .scrolled .btn-nav {
-        background: #1d1d1f;
-        color: white;
+        background: var(--text-primary);
+        color: #e0e5ec;
     }
 
     .btn-nav:hover {

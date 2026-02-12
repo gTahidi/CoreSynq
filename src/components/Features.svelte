@@ -2,30 +2,33 @@
     const features = [
         {
             title: "Satellite-Verified ESG",
-            description: "We use geospatial imagery and remote sensing to validate corporate environmental claims, eliminating greenwashing risk.",
+            description:
+                "We use geospatial imagery and remote sensing to validate corporate environmental claims, eliminating greenwashing risk.",
             icon: "🛰️",
-            bg: "#f0f7ff"
+            bg: "#f0f7ff",
         },
         {
             title: "GRI & SASB Alignment",
-            description: "Our scores are mapped directly to global reporting standards, ensuring your data is ready for institutional scrutiny.",
+            description:
+                "Our scores are mapped directly to global reporting standards, ensuring your data is ready for institutional scrutiny.",
             icon: "📋",
-            bg: "#f1f8f1"
+            bg: "#f1f8f1",
         },
         {
             title: "Real-time Transition Tracking",
-            description: "Monitor the shift from fossil fuels to renewables with live grid-level energy data and carbon intensity metrics.",
+            description:
+                "Monitor the shift from fossil fuels to renewables with live grid-level energy data and carbon intensity metrics.",
             icon: "🌱",
-            bg: "#fff8f0"
-        }
+            bg: "#fff8f0",
+        },
     ];
 </script>
 
 <section class="features">
     <div class="features-container">
         {#each features as feature}
-            <div class="feature-card">
-                <div class="feature-icon" style="background: {feature.bg}">
+            <div class="feature-card neumorphic-card">
+                <div class="feature-icon neumorphic-inset">
                     {feature.icon}
                 </div>
                 <h3 class="feature-title">{feature.title}</h3>
@@ -37,40 +40,47 @@
 
 <style>
     .features {
-        background-color: #fafafa;
+        background-color: var(--page-bg);
         max-width: none;
+        padding-top: 120px;
+        padding-bottom: 120px;
     }
 
     .features-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
-        max-width: 1100px;
+        gap: 40px;
+        max-width: 1200px;
         margin: 0 auto;
     }
 
     .feature-card {
-        background: #ffffff;
+        background-color: var(--bg-color);
         padding: 48px 32px;
-        border-radius: 24px;
-        border: 1px solid rgba(0,0,0,0.02);
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border-radius: var(--border-radius-card);
+        border: none;
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
     }
 
     .feature-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+        transform: translateY(-5px);
+        /* Shadow hover state handled by neumorphic-card class if present, otherwise add here */
     }
 
     .feature-icon {
-        font-size: 40px;
+        font-size: 32px;
         margin-bottom: 24px;
         width: 80px;
         height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 20px;
+        border-radius: 50%;
+        background-color: var(
+            --bg-color
+        ); /* Ensure it matches bg for inset effect */
     }
 
     .feature-title {

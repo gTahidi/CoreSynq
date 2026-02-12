@@ -1,25 +1,25 @@
 <script>
     const frameworks = [
-        { 
-            name: "GRI (Impact Materiality)", 
+        {
+            name: "GRI (Impact Materiality)",
             role: "Double Materiality",
-            desc: "Mapping detailed metrics across GRI 302 (Energy), 305 (Emissions), and 306 (Waste) to track total societal impact."
+            desc: "Mapping detailed metrics across GRI 302 (Energy), 305 (Emissions), and 306 (Waste) to track total societal impact.",
         },
-        { 
-            name: "SASB (Financial Risk)", 
+        {
+            name: "SASB (Financial Risk)",
             role: "Investor-Focused",
-            desc: "Sector-specific disclosure of ESG factors most likely to affect financial performance and valuation."
+            desc: "Sector-specific disclosure of ESG factors most likely to affect financial performance and valuation.",
         },
-        { 
-            name: "MSCI (Relative Performance)", 
+        {
+            name: "MSCI (Relative Performance)",
             role: "Industry Benchmarking",
-            desc: "Scoring companies against industry peers to identify leaders and laggards in environmental risk management."
+            desc: "Scoring companies against industry peers to identify leaders and laggards in environmental risk management.",
         },
-        { 
-            name: "Sustainalytics (Absolute Risk)", 
+        {
+            name: "Sustainalytics (Absolute Risk)",
             role: "Unmanaged Risk Exposure",
-            desc: "Focusing on unmanaged ESG risks, providing a 0–40+ scale where lower scores indicate lower environmental risk."
-        }
+            desc: "Focusing on unmanaged ESG risks, providing a 0–40+ scale where lower scores indicate lower environmental risk.",
+        },
     ];
 </script>
 
@@ -28,8 +28,11 @@
         <div class="frameworks-text">
             <span class="badge">Global Alignment</span>
             <h2>Integrated Standard Compliance</h2>
-            <p>Our platform doesn't just collect data—it translates it into the languages of global finance and accountability.</p>
-            
+            <p>
+                Our platform doesn't just collect data—it translates it into the
+                languages of global finance and accountability.
+            </p>
+
             <div class="framework-list">
                 {#each frameworks as framework}
                     <div class="framework-item">
@@ -56,7 +59,7 @@
 
 <style>
     .frameworks-section {
-        background: #ffffff;
+        background: var(--page-bg);
         padding: 120px 24px;
     }
 
@@ -86,13 +89,16 @@
         font-weight: 800;
         margin-bottom: 16px;
         letter-spacing: -0.02em;
+        font-family: var(--font-display);
+        color: var(--text-primary);
     }
 
     .frameworks-text p {
         font-size: 18px;
-        color: #86868b;
+        color: var(--text-secondary);
         line-height: 1.5;
         margin-bottom: 40px;
+        font-family: var(--font-body);
     }
 
     .framework-list {
@@ -121,12 +127,12 @@
 
     .item-content strong {
         font-size: 15px;
-        color: #1d1d1f;
+        color: var(--text-primary);
     }
 
     .item-content span {
         font-size: 12px;
-        color: #86868b;
+        color: var(--text-secondary);
         font-weight: 500;
     }
 
@@ -137,22 +143,26 @@
     }
 
     .framework-card {
-        background: #fafafa;
+        background: var(--card-bg);
         padding: 32px;
-        border-radius: 24px;
-        border: 1px solid rgba(0,0,0,0.02);
+        border-radius: var(--border-radius-card);
+        border: none;
+        box-shadow: var(--shadow-extruded);
     }
 
     .framework-card h3 {
         font-size: 17px;
         font-weight: 700;
         margin-bottom: 12px;
+        color: var(--text-primary);
+        font-family: var(--font-display);
     }
 
     .framework-card p {
         font-size: 13px;
-        color: #86868b;
+        color: var(--text-secondary);
         line-height: 1.5;
+        font-family: var(--font-body);
     }
 
     @media (max-width: 900px) {

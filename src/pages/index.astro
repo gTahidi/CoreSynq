@@ -16,12 +16,20 @@ import '../styles/global.css';
 	<Navbar client:load />
 	<main>
 		<Hero client:load />
-		<div data-reveal><CaseStudy client:visible /></div>
-		<div data-reveal><Metrics client:visible /></div>
+
+        <!-- Solution / Features -->
+		<div data-reveal><Features client:visible /></div>
+
+        <!-- How it Work / Tech -->
 		<div data-reveal><DynamicNodes client:visible /></div>
 		<div data-reveal><Frameworks client:visible /></div>
-		<div data-reveal><Features client:visible /></div>
+
+        <!-- Proof / Impact -->
+		<div data-reveal><CaseStudy client:visible /></div>
+		<div data-reveal><Metrics client:visible /></div>
 		<div data-reveal><ImpactDemo client:visible /></div>
+
+        <!-- Call to Action -->
 		<div data-reveal><Waitlist client:visible /></div>
 	</main>
 </Layout>
