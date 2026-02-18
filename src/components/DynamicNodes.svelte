@@ -1,229 +1,394 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
 
-    export let title = "Interconnected Intelligence";
-    export let subtitle =
-        "Coresynq bridges the gap between raw environmental data and actionable ESG insights.";
+    let sectionContainer;
+    let progress = 0;
+    let innerHeight = 0;
+    let scrollY = 0;
 
-    let canvas;
-    let container;
-    let mouseX = 0;
-    let mouseY = 0;
-    let angle = 0;
+    // Animation state
+    let time = 0;
+    let animationFrame;
+    let mouse = { x: 0, y: 0 };
+    let targetMouse = { x: 0, y: 0 };
 
-    const nodes = [
+    let nodes = [
         {
             id: "satellite",
             label: "Satellite Data",
-            x: 0,
-            y: 0,
-            color: "#e3f2fd",
-            textColor: "#0071e3",
             icon: "🛰️",
-            baseAngle: 0,
+            x: 20,
+            y: 20,
+            color: "#E8F5E9",
+            text: "#2E7D32",
+            speed: 0.02,
+            offset: 0,
         },
         {
             id: "grid",
             label: "Energy Grid",
-            x: 0,
-            y: 0,
-            color: "#e8f5e9",
-            textColor: "#2e7d32",
             icon: "⚡",
-            baseAngle: (Math.PI * 2) / 4,
-        },
-        {
-            id: "core",
-            label: "Coresynq AI",
-            x: 0,
-            y: 0,
-            color: "#f3e5f5",
-            textColor: "#7b1fa2",
-            isCenter: true,
-            icon: "🧠",
-            baseAngle: 0,
+            x: 80,
+            y: 20,
+            color: "#FFFDE7",
+            text: "#FBC02D",
+            speed: 0.03,
+            offset: 2,
         },
         {
             id: "gri",
             label: "GRI Framework",
-            x: 0,
-            y: 0,
-            color: "#fff3e0",
-            textColor: "#ef6c00",
             icon: "📋",
-            baseAngle: (Math.PI * 2) / 2,
+            x: 80,
+            y: 80,
+            color: "#E0F2F1",
+            text: "#00695C",
+            speed: 0.025,
+            offset: 4,
         },
         {
             id: "sasb",
             label: "SASB Standards",
-            x: 0,
-            y: 0,
-            color: "#fce4ec",
-            textColor: "#c2185b",
             icon: "🛡️",
-            baseAngle: (Math.PI * 3 * 2) / 4,
+            x: 20,
+            y: 80,
+            color: "#F3E5F5",
+            text: "#7B1FA2",
+            speed: 0.015,
+            offset: 1,
         },
     ];
 
+    function handleScroll() {
+        if (!sectionContainer) return;
+        const rect = sectionContainer.getBoundingClientRect();
+
+        const start = 0;
+        const distance = rect.height - innerHeight;
+        const rawProgress = -rect.top / distance;
+        progress = Math.max(0, Math.min(1, rawProgress));
+    }
+
+    function handleMouseMove(e) {
+        // Normalize mouse position -1 to 1
+        targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        targetMouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+    }
+
+    function animate() {
+        time += 0.02;
+
+        // Smooth mouse lerp
+        mouse.x += (targetMouse.x - mouse.x) * 0.1;
+        mouse.y += (targetMouse.y - mouse.y) * 0.1;
+
+        // Force update for reactivity
+        nodes = nodes;
+
+        animationFrame = requestAnimationFrame(animate);
+    }
+
     onMount(() => {
-        const ctx = canvas.getContext("2d");
-        let frame;
-
-        const resize = () => {
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = 800 * dpr;
-            canvas.style.width = `${window.innerWidth}px`;
-            canvas.style.height = "800px";
-            ctx.scale(dpr, dpr);
-        };
-
-        const handleMouseMove = (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouseX = e.clientX - rect.left;
-            mouseY = e.clientY - rect.top;
-        };
-
-        window.addEventListener("resize", resize);
+        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("resize", handleScroll);
         window.addEventListener("mousemove", handleMouseMove);
-        resize();
-
-        const animate = () => {
-            ctx.clearRect(0, 0, window.innerWidth, 800);
-            const centerX = window.innerWidth / 2;
-            const centerY = 400;
-            const radius = Math.min(window.innerWidth * 0.25, 240); // Responsive radius
-
-            const core = nodes.find((n) => n.isCenter);
-            core.x = centerX + (mouseX - centerX) * 0.05;
-            core.y = centerY + (mouseY - centerY) * 0.05;
-
-            ctx.beginPath();
-            ctx.strokeStyle = "#f0f0f2";
-            ctx.lineWidth = 1.5;
-
-            nodes.forEach((node) => {
-                if (!node.isCenter) {
-                    const currentAngle = angle + node.baseAngle;
-                    const targetX = centerX + Math.cos(currentAngle) * radius;
-                    const targetY = centerY + Math.sin(currentAngle) * radius;
-
-                    node.x = targetX + (mouseX - targetX) * 0.03;
-                    node.y = targetY + (mouseY - targetY) * 0.03;
-
-                    ctx.moveTo(core.x, core.y);
-                    ctx.lineTo(node.x, node.y);
-                }
-            });
-            ctx.stroke();
-
-            nodes.forEach((node) => {
-                const nodeSize = node.isCenter ? 60 : 50;
-                const dist = Math.sqrt(
-                    (mouseX - node.x) ** 2 + (mouseY - node.y) ** 2,
-                );
-                const scale = dist < nodeSize ? 1.1 : 1;
-
-                ctx.save();
-                ctx.translate(node.x, node.y);
-                ctx.scale(scale, scale);
-
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = "rgba(0,0,0,0.06)";
-
-                ctx.beginPath();
-                ctx.arc(0, 0, nodeSize, 0, Math.PI * 2);
-                ctx.fillStyle = node.color;
-                ctx.fill();
-
-                ctx.shadowBlur = 0;
-                ctx.font = `${node.isCenter ? "28px" : "22px"} Inter`;
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(node.icon, 0, -10);
-
-                ctx.fillStyle = node.textColor;
-                ctx.font = `600 ${node.isCenter ? "13px" : "11px"} Inter`;
-                ctx.fillText(node.label, 0, 22);
-
-                ctx.restore();
-            });
-
-            // Neumorphic Connection Lines
-            ctx.shadowBlur = 0;
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.5)"; // Light edge
-            ctx.stroke();
-            ctx.strokeStyle = "rgba(163, 177, 198, 0.4)"; // Dark edge
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            angle += 0.003;
-            frame = requestAnimationFrame(animate);
-        };
-
+        handleScroll();
         animate();
 
         return () => {
-            cancelAnimationFrame(frame);
-            window.removeEventListener("resize", resize);
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleScroll);
             window.removeEventListener("mousemove", handleMouseMove);
+            cancelAnimationFrame(animationFrame);
         };
     });
 </script>
 
-<div class="dynamic-nodes-wrapper" bind:this={container}>
-    <canvas bind:this={canvas} class="nodes-canvas"></canvas>
-    <div class="nodes-overlay">
-        <h2>{title}</h2>
-        <p>{subtitle}</p>
+<svelte:window bind:innerHeight bind:scrollY />
+
+<section class="scroll-section" bind:this={sectionContainer}>
+    <div class="sticky-container">
+        <!-- Subtle Grid Background -->
+        <div class="absolute-bg bg-grid"></div>
+
+        <div class="content-wrapper">
+            <div
+                class="header"
+                style="opacity: {1 -
+                    progress * 3}; transform: translateY({-progress * 100}px)"
+            >
+                <h2>Interconnected Intelligence</h2>
+                <p>
+                    Bridging the gap between raw environmental data and
+                    actionable ESG insights.
+                </p>
+            </div>
+
+            <div
+                class="visualization"
+                style="transform: perspective(1000px) rotateX({mouse.y *
+                    2}deg) rotateY({mouse.x * 2}deg)"
+            >
+                <!-- SVG Connections -->
+                <svg
+                    class="connections"
+                    viewBox="0 0 100 100"
+                    preserveAspectRatio="none"
+                >
+                    {#each nodes as node, i}
+                        <line
+                            x1="50"
+                            y1="50"
+                            x2={node.x +
+                                Math.sin(time * node.speed + node.offset) * 2 +
+                                mouse.x * 5}
+                            y2={node.y +
+                                Math.cos(time * node.speed + node.offset) * 2 +
+                                mouse.y * 5}
+                            vector-effect="non-scaling-stroke"
+                            stroke="#DAE0E0"
+                            stroke-width="2"
+                            stroke-dasharray="2"
+                            stroke-dashoffset={Math.max(0, 1 - progress * 1.5)}
+                            stroke-linecap="round"
+                        />
+                    {/each}
+                </svg>
+
+                <!-- Central Node -->
+                <div class="center-node-wrapper">
+                    <div
+                        class="center-node"
+                        style="transform: scale({1 + progress * 0.8});"
+                    >
+                        <div class="icon-box">
+                            <span class="brain-icon">🌱</span>
+                        </div>
+                        <div class="node-label center-label">Coresynq AI</div>
+                    </div>
+                </div>
+
+                <!-- Surrounding Nodes -->
+                {#each nodes as node, i}
+                    <div
+                        class="node-wrapper"
+                        style="
+                            left: {node.x +
+                            Math.sin(time * node.speed + node.offset) * 2 +
+                            mouse.x * 5}%; 
+                            top: {node.y +
+                            Math.cos(time * node.speed + node.offset) * 2 +
+                            mouse.y * 5}%; 
+                            opacity: {Math.max(0, (progress - 0.3) * 2)}; 
+                            transform: translate(-50%, -50%) scale({0.5 +
+                            Math.min(0.5, progress - 0.3)})
+                        "
+                    >
+                        <div class="node-card">
+                            <div class="node-icon">{node.icon}</div>
+                            <div class="node-label" style="color: {node.text}">
+                                {node.label}
+                            </div>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+
+            <div
+                class="completion-msg"
+                style="opacity: {Math.max(
+                    0,
+                    (progress - 0.8) * 5,
+                )}; transform: translateY({(1 - progress) * 20}px)"
+            ></div>
+        </div>
     </div>
-</div>
+</section>
 
 <style>
-    .dynamic-nodes-wrapper {
+    .scroll-section {
+        height: 300vh;
         position: relative;
-        width: 100%;
-        height: 800px;
         background-color: var(--page-bg);
-        overflow: hidden;
-        margin-top: 0;
-        padding-top: 60px; /* Add some internal breathing room */
+        margin-top: -1px;
     }
 
-    .nodes-canvas {
-        width: 100%;
-        height: 800px;
+    .absolute-bg {
         position: absolute;
         top: 0;
         left: 0;
-    }
-
-    .nodes-overlay {
-        position: absolute;
-        top: 120px;
-        left: 50%;
-        transform: translateX(-50%);
-        text-align: center;
-        pointer-events: none;
-        z-index: 10;
         width: 100%;
-        max-width: 800px;
-        padding: 0 24px;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.6;
+        pointer-events: none;
     }
 
-    .nodes-overlay h2 {
-        font-size: 24px;
-        font-weight: 800;
-        margin-bottom: 8px;
-        letter-spacing: -0.02em;
-        color: var(--text-primary);
+    .sticky-container {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .content-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 1000px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        perspective: 1000px;
+    }
+
+    .header {
+        position: absolute;
+        top: 100px;
+        text-align: center;
+        z-index: 10;
+        transition: opacity 0.1s;
+        padding: 0 20px;
+    }
+
+    .header h2 {
         font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3rem);
+        margin-bottom: 1rem;
+        color: var(--text-primary);
     }
 
-    .nodes-overlay p {
+    .header p {
         font-family: var(--font-body);
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+
+    .visualization {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.1s ease-out;
+    }
+
+    .connections {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        z-index: 0;
+    }
+
+    .center-node-wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+    }
+
+    .center-node {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        box-shadow: 0 10px 40px -10px rgba(15, 61, 62, 0.15); /* Soft green shadow */
+        border: 1px solid rgba(15, 61, 62, 0.05);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .icon-box {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin-bottom: 10px;
+        background-color: rgba(15, 61, 62, 0.05);
+    }
+
+    .node-label {
+        font-family: var(--font-display);
+        font-weight: 700;
         font-size: 14px;
-        color: #86868b;
-        line-height: 1.4;
+        color: var(--text-primary);
+    }
+
+    .center-label {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+
+    .node-wrapper {
+        position: absolute;
+        z-index: 4;
+        transition:
+            transform 0.1s linear,
+            opacity 0.1s; /* Important: remove left/top transition for smooth anim */
+        will-change: transform, left, top;
+    }
+
+    .node-card {
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background-color: white;
+        border-radius: 20px;
+        white-space: nowrap;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    .node-icon {
+        font-size: 24px;
+    }
+
+    .completion-msg {
+        position: absolute;
+        bottom: 100px;
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        color: var(--text-primary);
+        opacity: 0;
+    }
+
+    @media (max-width: 768px) {
+        .scroll-section {
+            height: 250vh;
+        }
+        .center-node {
+            width: 120px;
+            height: 120px;
+        }
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
+        }
+        .node-card {
+            padding: 10px 16px;
+        }
+        .visualization {
+            max-width: 90%;
+        }
     }
 </style>

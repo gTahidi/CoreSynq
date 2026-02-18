@@ -2,14 +2,17 @@
     let y = 0;
 </script>
 
-<nav class="navbar" class:scrolled={y > 50}>
+<nav class="navbar" class:scrolled={y > 20}>
     <div class="nav-container">
-        <div class="logo">Coresynq</div>
+        <div class="logo">
+            <span class="logo-icon">🌱</span> Coresynq
+        </div>
         <div class="nav-links">
-            <a href="#intelligence">Intelligence</a>
-            <a href="#metrics">Metrics</a>
-            <a href="#frameworks">Frameworks</a>
-            <button class="btn-nav">Early Access</button>
+            <a href="#impact">Global Impact</a>
+            <a href="#solutions">Our Solutions</a>
+            <a href="#process">The Process</a>
+            <a href="#advisory">Advisory</a>
+            <a href="#contact" class="btn-nav-cta">Join Waitlist</a>
         </div>
     </div>
 </nav>
@@ -19,50 +22,48 @@
 <style>
     .navbar {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 1000px;
         z-index: 1000;
-        padding: 24px 0;
-        background: transparent;
+        padding: 16px 32px;
+        background: white;
+        border-radius: 9999px; /* Pill shape */
+        box-shadow: var(--shadow-float);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .navbar.scrolled {
-        padding: 20px 0;
-        background: rgba(
-            226,
-            230,
-            228,
-            0.85
-        ); /* Match new var(--bg-color) #E2E6E4 */
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-        border-bottom: none;
+        top: 16px; /* Slightly higher on scroll */
+        padding: 12px 32px;
+        box-shadow: 0 10px 30px rgba(15, 61, 62, 0.2); /* Deeper shadow on scroll */
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
     }
 
     .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 32px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 100%;
+        width: 100%;
     }
 
     .logo {
         font-family: var(--font-display);
         font-size: 20px;
         font-weight: 800;
-        color: white;
+        color: var(--text-primary);
         letter-spacing: -0.02em;
-        transition: color 0.4s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
-    .scrolled .logo {
-        color: var(--text-primary);
+    .logo-icon {
+        font-size: 24px;
     }
 
     .nav-links {
@@ -72,49 +73,43 @@
     }
 
     .nav-links a {
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--text-primary);
         text-decoration: none;
-        font-size: 13px;
-        font-weight: 500;
-        transition: all 0.4s ease;
-    }
-
-    .scrolled .nav-links a {
-        color: #86868b;
-    }
-
-    .scrolled .nav-links a:hover {
-        color: #1d1d1f;
+        font-size: 14px;
+        font-weight: 600;
+        transition: color 0.3s ease;
     }
 
     .nav-links a:hover {
-        color: white;
+        color: var(--accent-dark);
     }
 
-    .btn-nav {
-        background: white;
-        color: black;
-        border: none;
-        padding: 8px 18px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.4s ease;
+    .btn-nav-cta {
+        padding: 8px 20px;
+        background-color: var(--text-primary);
+        color: white !important;
+        border-radius: 999px;
+        font-weight: 700;
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease;
     }
 
-    .scrolled .btn-nav {
-        background: var(--text-primary);
-        color: #e0e5ec;
-    }
-
-    .btn-nav:hover {
-        transform: scale(1.05);
+    .btn-nav-cta:hover {
+        transform: translateY(-2px);
+        background-color: black;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     @media (max-width: 768px) {
+        .navbar {
+            width: 95%;
+            padding: 12px 20px;
+            top: 16px;
+        }
+
         .nav-links {
-            display: none;
+            display: none; /* Mobile menu implementation needed later */
         }
     }
 </style>

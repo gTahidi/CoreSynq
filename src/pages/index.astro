@@ -2,13 +2,13 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.svelte';
 import Hero from '../components/Hero.svelte';
-import CaseStudy from '../components/CaseStudy.svelte';
-import Metrics from '../components/Metrics.svelte';
+import StatCards from '../components/StatCards.svelte';
+import ProcessTimeline from '../components/ProcessTimeline.svelte';
+import FeatureSplit from '../components/FeatureSplit.svelte';
+import SolutionSection from '../components/SolutionSection.svelte';
 import DynamicNodes from '../components/DynamicNodes.svelte';
-import Frameworks from '../components/Frameworks.svelte';
-import Features from '../components/Features.svelte';
-import ImpactDemo from '../components/ImpactDemo.svelte';
 import Waitlist from '../components/Waitlist.svelte';
+import Testimonials from '../components/Testimonials.svelte';
 import '../styles/global.css';
 ---
 
@@ -16,21 +16,83 @@ import '../styles/global.css';
 	<Navbar client:load />
 	<main>
 		<Hero client:load />
+        
+        <!-- Phase 2: High-End Content Sections -->
+        
+        <!-- 1. The Why: Hidden Risk -->
+        <div id="impact" data-reveal class="bg-grid">
+            <StatCards client:visible />
+        </div>
 
-        <!-- Solution / Features -->
-		<div data-reveal><Features client:visible /></div>
+        <!-- B2B BREAK: Visual interruption between Risk and Process -->
+        <div id="solutions" data-reveal>
+             <SolutionSection 
+                client:visible
+                title="Enterprise-Grade Security"
+                subtitle="Trusted by Leaders"
+                description="Built for the most demanding compliance standards. Trace every calculation back to its source with full audit logs and bank-grade data encryption."
+                imageSrc="/feature_section_save_time_1771346992410.png"
+                benefits={[
+                    "SOC 2 Type II Certified",
+                    "End-to-End Data Encryption",
+                    "GDPR & CCPA Compliant"
+                ]} 
+             />
+        </div>
 
-        <!-- How it Work / Tech -->
+        <!-- 2. The Process: Path to Net Zen -->
+        <div id="process" data-reveal>
+            <ProcessTimeline client:visible />
+        </div>
+
+        <!-- 3. The Capability: Feature Deep Dives -->
+        <div class="features-container bg-grid-soft">
+            <div data-reveal>
+                <!-- 1. RESTORED: Uses actual generated image, not CSS mockup -->
+                <FeatureSplit 
+                    client:visible
+                    title="Automated Data Ingestion"
+                    description="Connect directly to your ERP, procurement systems, and energy meters. Coresynq automatically maps raw activity data to relevant emission factors, eliminating manual entry errors."
+                    badge="Ingestion"
+                    imageSrc="/dashboard_ui_mockup_1771348040250.png"
+                    reverse={false}
+                />
+            </div>
+            
+            <div data-reveal>
+                <FeatureSplit 
+                    client:visible
+                    title="Scientific Computation"
+                    description="Move beyond spend-based estimates. Our engine uses verified physical activity factors and scientific models to calculate your true carbon footprint with audit-ready precision."
+                    badge="Intelligence"
+                    imageSrc="/scientific_dashboard_light.png" 
+                    reverse={true}
+                />
+            </div>
+            
+            <div id="advisory" data-reveal>
+                <FeatureSplit 
+                    client:visible
+                    title="Strategic Advisory"
+                    description="Data alone isn't enough. Our expert advisory team helps you interpret the numbers, identify decarbonization opportunities, and navigate complex credit markets."
+                    badge="Strategy"
+                    imageSrc="/strategic_report_ui.png"
+                    reverse={false}
+                    class="bg-mint-50 rounded-3xl mx-4"
+                />
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div data-reveal>
+            <Testimonials client:visible />
+        </div>
+
+        <!-- Tech / How it works -->
 		<div data-reveal><DynamicNodes client:visible /></div>
-		<div data-reveal><Frameworks client:visible /></div>
-
-        <!-- Proof / Impact -->
-		<div data-reveal><CaseStudy client:visible /></div>
-		<div data-reveal><Metrics client:visible /></div>
-		<div data-reveal><ImpactDemo client:visible /></div>
-
+		
         <!-- Call to Action -->
-		<div data-reveal><Waitlist client:visible /></div>
+		<div id="contact" data-reveal><Waitlist client:visible /></div>
 	</main>
 </Layout>
 
@@ -50,3 +112,12 @@ import '../styles/global.css';
 
 	document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 </script>
+
+<style>
+    /* Add subtle background separation */
+    .features-container {
+        background-color: #FAFAFA;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

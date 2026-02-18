@@ -3,37 +3,50 @@
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'DM Sans', sans-serif;
 
-  /* Colors - Design Pivot (White Page, Sage Cards) */
+  /* Eco-Modern Palette (HomeBiogas Style) */
   --page-bg: #FFFFFF;
-  --card-bg: #E1E9E6;
-  /* Sage Grey */
-  --bg-color: var(--card-bg);
-  /* Default for components expecting a "surface" color */
+  --text-primary: #0F3D3E;
+  /* Deep Green */
+  --text-secondary: #2C5D5E;
+  /* Muted Green/Teal */
+  --accent-primary: #FFC700;
+  /* Solar Yellow */
+  --accent-light: #FFD54F;
+  --accent-dark: #FFAB00;
 
-  --text-primary: #2C3E36;
-  --text-secondary: #5F7368;
-  --accent-primary: #6C63FF;
-  --accent-light: #8B84FF;
-  --accent-secondary: #38B2AC;
+  /* Strategic Grid Background - Watershed Style */
+  .bg-grid {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-color: #ffffff;
+  }
 
-  /* Neumorphic Shadows - Tuned for Grey Cards on White BG (Claymorphism feel) */
-  --shadow-light: rgba(255, 255, 255, 0.9);
-  --shadow-dark: rgba(166, 178, 172, 0.4);
+  /* Darker grid for light gray sections */
+  .bg-grid-soft {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    background-color: #FAFAFA;
+  }
 
-  /* Shadows - Presets */
-  --shadow-card: 20px 20px 60px #d0d4d2, -20px -20px 60px #f4f8f6;
+  .bg-mint-50 {
+    background-color: #e6fcf5 !important;
+    /* Stronger Mint */
+  }
 
-  /* Legacy/Alias Shadows */
-  --shadow-extruded: var(--shadow-card);
-  --shadow-extruded-hover: 15px 15px 40px #d0d4d2, -15px -15px 40px #f4f8f6;
-  --shadow-inset: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
-  --shadow-inset-deep: inset 10px 10px 20px rgba(166, 178, 172, 0.6), inset -10px -10px 20px rgba(255, 255, 255, 0.8);
-  --shadow-inset-small: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+  /* Shadows - Soft & Organic */
+  --shadow-float: 0 10px 40px -10px rgba(15, 61, 62, 0.15);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
 
-  /* Spacing & Layout */
-  --border-radius-card: 32px;
-  --border-radius-btn: 16px;
-  --section-padding: 120px 24px;
+  /* Spacing & Shapes */
+  --radius-pill: 9999px;
+  --radius-organic: 40px;
+  --radius-curved-hero: 0 0 80px 80px;
+  /* Specific for Hero bottom */
+  --section-padding: 100px 24px;
 }
 
 * {
@@ -46,10 +59,14 @@ body {
   font-family: var(--font-body);
   background-color: var(--page-bg);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.5;
+  /* Tighter leading */
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   font-size: 16px;
+  /* Base 16px, user asked for 20px body but standardizing here first, components override */
+  letter-spacing: -0.01em;
+  /* Slight negative tracking globally */
 }
 
 h1,
@@ -60,6 +77,8 @@ h5,
 h6 {
   font-family: var(--font-display);
   color: var(--text-primary);
+  letter-spacing: -0.02em;
+  /* Tighter headings */
 }
 
 .section {

@@ -1,4 +1,4 @@
-<section class="waitlist">
+<section class="waitlist bg-grid">
     <div class="waitlist-container">
         <div class="waitlist-content">
             <h2>Join the Green Revolution</h2>
@@ -48,13 +48,12 @@
     .waitlist-container {
         max-width: 900px;
         margin: 0 auto;
-        background: var(
-            --card-bg
-        ); /* Use card bg for the inner container if desired, or transparent? */
+        background: #f0fdf4; /* Pastel Green / Mint 50 */
         /* Let's make the container a card for focus */
         padding: 80px 40px;
         border-radius: var(--border-radius-card);
-        box-shadow: var(--shadow-extruded);
+        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.1); /* Green-tinted shadow */
+        border: 1px solid #bbf7d0; /* Mint 200 border */
     }
 
     .waitlist-content {
@@ -90,14 +89,11 @@
         flex: 1;
         padding: 16px 24px;
         border-radius: var(--border-radius-btn);
-        border: none;
+        border: 1px solid #cbd5e1; /* Clear styling */
         font-size: 14px;
         outline: none;
-        background: var(
-            --bg-color
-        ); /* Inner input uses bg/card color? No, inputs usually inset */
-        background: var(--page-bg); /* Lighter than card? */
-        box-shadow: var(--shadow-inset-deep);
+        background: white; /* Clear white background */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle depth */
         color: var(--text-primary);
     }
 

@@ -1,25 +1,22 @@
 <script>
     const features = [
         {
-            title: "Satellite-Verified ESG",
+            title: "Multilingual Intelligence",
             description:
-                "We use geospatial imagery and remote sensing to validate corporate environmental claims, eliminating greenwashing risk.",
-            icon: "🛰️",
-            bg: "#f0f7ff",
+                "Process global financial and operational data in its native language. Our AI seamlessly handles local regulatory nuances across major languages to ensure precision and compliance.",
+            icon: "🌍",
         },
         {
-            title: "GRI & SASB Alignment",
+            title: "Audit-Ready Assurance",
             description:
-                "Our scores are mapped directly to global reporting standards, ensuring your data is ready for institutional scrutiny.",
-            icon: "📋",
-            bg: "#f1f8f1",
+                "Streamline collaboration with authoring tools, approval workflows, and permissioning. Export to Word with XBRL tagging to get to design and publication faster.",
+            icon: "🛡️",
         },
         {
-            title: "Real-time Transition Tracking",
+            title: "Real-World Impact",
             description:
-                "Monitor the shift from fossil fuels to renewables with live grid-level energy data and carbon intensity metrics.",
-            icon: "🌱",
-            bg: "#fff8f0",
+                "Go beyond reporting. Easily repurpose data to model scenarios, set targets for CSDDD, and fund scientifically vetted carbon removal technologies from our industry-leading marketplace.",
+            icon: "🌍",
         },
     ];
 </script>
@@ -27,9 +24,9 @@
 <section class="features">
     <div class="features-container">
         {#each features as feature}
-            <div class="feature-card neumorphic-card">
-                <div class="feature-icon neumorphic-inset">
-                    {feature.icon}
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">
+                    <span class="feature-icon">{feature.icon}</span>
                 </div>
                 <h3 class="feature-title">{feature.title}</h3>
                 <p class="feature-description">{feature.description}</p>
@@ -41,60 +38,59 @@
 <style>
     .features {
         background-color: var(--page-bg);
-        max-width: none;
-        padding-top: 120px;
+        padding-top: 60px; /* Reduced top padding as Hero has bottom margin */
         padding-bottom: 120px;
     }
 
     .features-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
+        gap: 32px;
         max-width: 1200px;
         margin: 0 auto;
+        padding: 0 24px;
     }
 
     .feature-card {
-        background-color: var(--bg-color);
-        padding: 48px 32px;
-        border-radius: var(--border-radius-card);
-        border: none;
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+        background-color: white;
+        padding: 40px 32px;
+        border-radius: 32px; /* Soft rounding */
+        /* Clean soft card shadow */
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.03);
     }
 
     .feature-card:hover {
-        transform: translateY(-5px);
-        /* Shadow hover state handled by neumorphic-card class if present, otherwise add here */
+        transform: translateY(-8px);
     }
 
-    .feature-icon {
-        font-size: 32px;
-        margin-bottom: 24px;
-        width: 80px;
-        height: 80px;
+    .feature-icon-wrapper {
+        width: 64px;
+        height: 64px;
+        background-color: rgba(15, 61, 62, 0.05); /* Very light green bg */
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
-        background-color: var(
-            --bg-color
-        ); /* Ensure it matches bg for inset effect */
+        margin-bottom: 24px;
+    }
+
+    .feature-icon {
+        font-size: 28px;
     }
 
     .feature-title {
-        font-size: 17px;
+        font-size: 20px;
         font-weight: 700;
-        margin-bottom: 10px;
-        color: #1d1d1f;
-        letter-spacing: -0.01em;
+        margin-bottom: 12px;
+        color: var(--text-primary);
     }
 
     .feature-description {
-        font-size: 13px;
-        color: #86868b;
-        line-height: 1.5;
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.6;
     }
 
     @media (max-width: 900px) {
