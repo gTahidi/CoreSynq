@@ -2,20 +2,20 @@
     export let testimonials = [
         {
             quote: "Coresynq has completely transformed how we track Scope 3 emissions. The granularity of the data is unmatched.",
-            author: "Sarah Jenkins",
-            role: "Chief Sustainability Officer, TechFlow",
+            author: "Wanjiku Kimani",
+            role: "Chief Sustainability Officer, AgriTech East Africa",
             avatar: "/avatars/avatar-1.png", // We'll just use a colored div fallback if image fails
         },
         {
             quote: "The automated ingestion features alone saved our team hundreds of hours. It's the audit-ready solution we needed.",
-            author: "David Chen",
-            role: "Head of ESG, Global Logistics",
+            author: "Juma Odhiambo",
+            role: "Head of ESG, Regional Logistics",
             avatar: "/avatars/avatar-2.png",
         },
         {
             quote: "Finally, a platform that bridges the gap between procurement data and scientific climate modeling.",
-            author: "Elena Rodriguez",
-            role: "Director of Operations, GreenBuild",
+            author: "Fatuma Hassan",
+            role: "Director of Operations, GreenBuild Kenya",
             avatar: "/avatars/avatar-3.png",
         },
     ];

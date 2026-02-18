@@ -1,31 +1,9 @@
 <script>
     import { onMount } from "svelte";
+    import LogoWall from "./LogoWall.svelte";
 
     let videoElement;
     let videoLoaded = false;
-
-    const partners = [
-        {
-            name: "Gold Standard",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Gold_Standard_Logo.png",
-        },
-        {
-            name: "Verra",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Verra_Logo.png/640px-Verra_Logo.png",
-        },
-        {
-            name: "UNDP",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/2/23/UNDP_logo.svg",
-        },
-        {
-            name: "GIZ",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/e/e1/GIZ_Logo.svg",
-        },
-        {
-            name: "SNV",
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/SNV_world_logo_2016.svg/640px-SNV_world_logo_2016.svg.png",
-        },
-    ];
 
     onMount(() => {
         if (videoElement) {
@@ -76,16 +54,7 @@
 
     <!-- Integrated Partners Marquee in White Space -->
     <div class="partners-marquee-container">
-        <div class="marquee-label">Partnering With</div>
-        <div class="marquee-content">
-            <div class="marquee-track">
-                {#each [...partners, ...partners] as partner}
-                    <div class="partner-logo-item">
-                        <img src={partner.logo} alt={partner.name} />
-                    </div>
-                {/each}
-            </div>
-        </div>
+        <LogoWall />
     </div>
 </section>
 

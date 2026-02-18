@@ -1,9 +1,12 @@
 <script>
+    import SecurityVisual from "./SecurityVisual.svelte";
+
     export let title = "For Farmers";
     export let subtitle = "Our Complete Solution";
     export let description =
         "The Coresynq System features an innovative design enabling fast and scalable installations.";
     export let imageSrc = "/content-2.jpg";
+    export let useVisualComponent = false;
     export let benefits = ["Benefit One", "Benefit Two", "Benefit Three"];
 </script>
 
@@ -29,7 +32,11 @@
 
         <!-- Image Side -->
         <div class="visuaĺ">
-            <img src={imageSrc} alt={title} loading="lazy" />
+            {#if useVisualComponent}
+                <SecurityVisual />
+            {:else}
+                <img src={imageSrc} alt={title} loading="lazy" />
+            {/if}
         </div>
     </div>
 </section>
