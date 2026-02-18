@@ -245,7 +245,7 @@
         .hero {
             height: auto;
             min-height: 700px;
-            padding-bottom: 120px;
+            padding-bottom: 220px; /* Increased from 120px to clear 140px marquee + gap */
         }
         .hero-content-wrapper {
             margin-top: 0;
