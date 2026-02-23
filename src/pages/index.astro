@@ -17,15 +17,13 @@ import '../styles/global.css';
 	<main>
 		<Hero client:load />
         
-        <!-- Phase 2: High-End Content Sections -->
-        
         <!-- 1. The Why: Hidden Risk -->
-        <div id="impact" data-reveal class="bg-grid">
+        <div id="impact" class="bg-grid" data-reveal>
             <StatCards client:visible />
         </div>
 
-        <!-- B2B BREAK: Visual interruption between Risk and Process -->
-        <div id="solutions" data-reveal>
+        <!-- Enterprise Security -->
+        <div id="solutions" class="bg-grid" data-reveal>
              <SolutionSection 
                 client:visible
                 title="Enterprise-Grade Security"
@@ -41,15 +39,14 @@ import '../styles/global.css';
              />
         </div>
 
-        <!-- 2. The Process: Path to Net Zen -->
-        <div id="process" data-reveal>
+        <!-- 2. The Process: Path to Net Zero -->
+        <div id="process" class="bg-grid" data-reveal>
             <ProcessTimeline client:visible />
         </div>
 
         <!-- 3. The Capability: Feature Deep Dives -->
         <div class="features-container bg-grid-soft">
             <div data-reveal>
-                <!-- 1. RESTORED: Uses actual generated image, not CSS mockup -->
                 <FeatureSplit 
                     client:visible
                     title="Automated Data Ingestion"
@@ -71,7 +68,7 @@ import '../styles/global.css';
                 />
             </div>
             
-            <div id="advisory" data-reveal>
+            <div id="advisory" class="bg-mint-50 rounded-3xl mx-4 mb-16" data-reveal>
                 <FeatureSplit 
                     client:visible
                     title="Strategic Advisory"
@@ -79,7 +76,6 @@ import '../styles/global.css';
                     badge="Strategy"
                     imageSrc="/strategic_report_ui.png"
                     reverse={false}
-                    class="bg-mint-50 rounded-3xl mx-4"
                 />
             </div>
         </div>
@@ -98,26 +94,28 @@ import '../styles/global.css';
 </Layout>
 
 <script>
-	const observerOptions = {
-		threshold: 0.1,
-		rootMargin: '0px 0px -50px 0px'
-	};
+	// GSAP-enhanced scroll reveals
+	async function initScrollReveals() {
+		const { gsap } = await import("gsap");
+		const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+		gsap.registerPlugin(ScrollTrigger);
 
-	const observer = new IntersectionObserver((entries) => {
-		entries.forEach(entry => {
-			if (entry.isIntersecting) {
-				entry.target.setAttribute('data-reveal', 'visible');
-			}
+		document.querySelectorAll('[data-reveal]').forEach(el => {
+			gsap.fromTo(el,
+				{ y: 40, opacity: 0 },
+				{ y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+				  scrollTrigger: { trigger: el, start: "top 88%" }
+				}
+			);
 		});
-	}, observerOptions);
-
-	document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+	}
+	
+	initScrollReveals();
 </script>
 
 <style>
-    /* Add subtle background separation */
     .features-container {
-        background-color: #FAFAFA;
+        background-color: var(--page-bg);
         display: flex;
         flex-direction: column;
     }

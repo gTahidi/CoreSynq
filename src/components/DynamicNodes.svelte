@@ -19,8 +19,6 @@
             icon: "🛰️",
             x: 20,
             y: 20,
-            color: "#E8F5E9",
-            text: "#2E7D32",
             speed: 0.02,
             offset: 0,
         },
@@ -30,8 +28,6 @@
             icon: "⚡",
             x: 80,
             y: 20,
-            color: "#FFFDE7",
-            text: "#FBC02D",
             speed: 0.03,
             offset: 2,
         },
@@ -41,8 +37,6 @@
             icon: "📋",
             x: 80,
             y: 80,
-            color: "#E0F2F1",
-            text: "#00695C",
             speed: 0.025,
             offset: 4,
         },
@@ -52,8 +46,6 @@
             icon: "🛡️",
             x: 20,
             y: 80,
-            color: "#F3E5F5",
-            text: "#7B1FA2",
             speed: 0.015,
             offset: 1,
         },
@@ -62,29 +54,21 @@
     function handleScroll() {
         if (!sectionContainer) return;
         const rect = sectionContainer.getBoundingClientRect();
-
-        const start = 0;
         const distance = rect.height - innerHeight;
         const rawProgress = -rect.top / distance;
         progress = Math.max(0, Math.min(1, rawProgress));
     }
 
     function handleMouseMove(e) {
-        // Normalize mouse position -1 to 1
         targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         targetMouse.y = (e.clientY / window.innerHeight) * 2 - 1;
     }
 
     function animate() {
         time += 0.02;
-
-        // Smooth mouse lerp
         mouse.x += (targetMouse.x - mouse.x) * 0.1;
         mouse.y += (targetMouse.y - mouse.y) * 0.1;
-
-        // Force update for reactivity
         nodes = nodes;
-
         animationFrame = requestAnimationFrame(animate);
     }
 
@@ -108,9 +92,6 @@
 
 <section class="scroll-section" bind:this={sectionContainer}>
     <div class="sticky-container">
-        <!-- Subtle Grid Background -->
-        <div class="absolute-bg bg-grid"></div>
-
         <div class="content-wrapper">
             <div
                 class="header"
@@ -146,10 +127,9 @@
                                 Math.cos(time * node.speed + node.offset) * 2 +
                                 mouse.y * 5}
                             vector-effect="non-scaling-stroke"
-                            stroke="#DAE0E0"
+                            stroke="rgba(44, 93, 94, 0.4)"
                             stroke-width="2"
-                            stroke-dasharray="2"
-                            stroke-dashoffset={Math.max(0, 1 - progress * 1.5)}
+                            stroke-dasharray="4 4"
                             stroke-linecap="round"
                         />
                     {/each}
@@ -185,8 +165,10 @@
                         "
                     >
                         <div class="node-card">
-                            <div class="node-icon">{node.icon}</div>
-                            <div class="node-label" style="color: {node.text}">
+                            <div class="node-icon-well">
+                                <span class="node-icon">{node.icon}</span>
+                            </div>
+                            <div class="node-label">
                                 {node.label}
                             </div>
                         </div>
@@ -211,17 +193,6 @@
         position: relative;
         background-color: var(--page-bg);
         margin-top: -1px;
-    }
-
-    .absolute-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        opacity: 0.6;
-        pointer-events: none;
     }
 
     .sticky-container {
@@ -262,6 +233,8 @@
         font-size: clamp(2rem, 4vw, 3rem);
         margin-bottom: 1rem;
         color: var(--text-primary);
+        font-weight: 800;
+        letter-spacing: -0.03em;
     }
 
     .header p {
@@ -299,6 +272,7 @@
         z-index: 5;
     }
 
+    /* Neumorphic center node */
     .center-node {
         width: 160px;
         height: 160px;
@@ -307,12 +281,16 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: white;
-        box-shadow: 0 10px 40px -10px rgba(15, 61, 62, 0.15); /* Soft green shadow */
-        border: 1px solid rgba(15, 61, 62, 0.05);
-        transition: box-shadow 0.3s ease;
+        background-color: var(--card-bg);
+        box-shadow: var(--shadow-extruded);
+        transition: box-shadow 0.3s ease-out;
     }
 
+    .center-node:hover {
+        box-shadow: var(--shadow-extruded-hover);
+    }
+
+    /* Neumorphic inset icon well */
     .icon-box {
         width: 80px;
         height: 80px;
@@ -322,7 +300,8 @@
         justify-content: center;
         font-size: 40px;
         margin-bottom: 10px;
-        background-color: rgba(15, 61, 62, 0.05);
+        background-color: var(--card-bg);
+        box-shadow: var(--shadow-inset-deep);
     }
 
     .node-label {
@@ -342,24 +321,40 @@
         z-index: 4;
         transition:
             transform 0.1s linear,
-            opacity 0.1s; /* Important: remove left/top transition for smooth anim */
+            opacity 0.1s;
         will-change: transform, left, top;
     }
 
+    /* Neumorphic outer node cards */
     .node-card {
         padding: 16px 24px;
         display: flex;
         align-items: center;
         gap: 12px;
-        background-color: white;
+        background-color: var(--card-bg);
         border-radius: 20px;
         white-space: nowrap;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        border: 1px solid rgba(0, 0, 0, 0.02);
+        box-shadow: var(--shadow-extruded-small);
+        transition: box-shadow 0.3s ease-out;
+    }
+
+    .node-card:hover {
+        box-shadow: var(--shadow-extruded);
+    }
+
+    .node-icon-well {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-inset-small);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .node-icon {
-        font-size: 24px;
+        font-size: 20px;
     }
 
     .completion-msg {

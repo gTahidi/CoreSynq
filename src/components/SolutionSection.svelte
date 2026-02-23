@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from "svelte";
     import SecurityVisual from "./SecurityVisual.svelte";
 
     export let title = "For Farmers";
@@ -8,9 +9,44 @@
     export let imageSrc = "/content-2.jpg";
     export let useVisualComponent = false;
     export let benefits = ["Benefit One", "Benefit Two", "Benefit Three"];
+
+    let sectionEl;
+
+    onMount(async () => {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        gsap.registerPlugin(ScrollTrigger);
+
+        const textContent = sectionEl.querySelector(".content");
+        const mediaContent = sectionEl.querySelector(".visual");
+
+        gsap.fromTo(
+            textContent,
+            { x: -60, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: { trigger: sectionEl, start: "top 75%" },
+            },
+        );
+
+        gsap.fromTo(
+            mediaContent,
+            { x: 60, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: { trigger: sectionEl, start: "top 75%" },
+            },
+        );
+    });
 </script>
 
-<section class="solution-section">
+<section class="solution-section" bind:this={sectionEl}>
     <div class="container">
         <!-- Text Side -->
         <div class="content">
@@ -21,21 +57,23 @@
             <ul class="benefits">
                 {#each benefits as benefit}
                     <li class="benefit-item">
-                        <span class="icon">✅</span>
+                        <span class="benefit-icon-well">✓</span>
                         <span class="text">{benefit}</span>
                     </li>
                 {/each}
             </ul>
 
-            <button class="btn-primary">Read More</button>
+            <button class="btn-neumorphic">Read More</button>
         </div>
 
         <!-- Image Side -->
-        <div class="visuaĺ">
+        <div class="visual">
             {#if useVisualComponent}
                 <SecurityVisual />
             {:else}
-                <img src={imageSrc} alt={title} loading="lazy" />
+                <div class="image-wrapper">
+                    <img src={imageSrc} alt={title} loading="lazy" />
+                </div>
             {/if}
         </div>
     </div>
@@ -43,10 +81,7 @@
 
 <style>
     .solution-section {
-        background-color: var(
-            --bg-cream,
-            #fdfbf7
-        ); /* Default to cream if var not set */
+        background-color: var(--page-bg);
         padding: var(--section-padding);
     }
 
@@ -61,27 +96,32 @@
     }
 
     .label {
-        color: var(--text-secondary);
+        color: var(--accent-primary);
         font-weight: 700;
         text-transform: uppercase;
-        font-size: 14px;
-        letter-spacing: 0.05em;
-        display: block;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        display: inline-block;
         margin-bottom: 16px;
+        background: var(--card-bg);
+        padding: 8px 16px;
+        border-radius: 50px;
+        box-shadow: var(--shadow-inset-small);
     }
 
     .title {
         font-family: var(--font-display);
-        font-size: 48px;
+        font-size: clamp(36px, 4vw, 48px);
         font-weight: 800;
         color: var(--text-primary);
         margin-bottom: 24px;
-        line-height: 1.1;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
     }
 
     .description {
         font-size: 18px;
-        color: #4a5568;
+        color: var(--text-secondary);
         line-height: 1.6;
         margin-bottom: 32px;
     }
@@ -101,32 +141,64 @@
         color: var(--text-primary);
     }
 
-    .icon {
-        color: var(--accent-primary); /* Yellow Check? Or Green? */
-        /* User generic icon for now, usually green in eco sites, but yellow in HomeBiogas */
+    .benefit-icon-well {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-inset-small);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-primary); /* Deep Green checkmarks */
+        flex-shrink: 0;
     }
 
-    .btn-primary {
-        background-color: var(--accent-primary);
+    .btn-neumorphic {
+        background-color: var(--card-bg);
         color: var(--text-primary);
         border: none;
         padding: 14px 40px;
-        border-radius: 999px;
+        border-radius: var(--border-radius-btn);
         font-weight: 700;
         cursor: pointer;
-        transition: transform 0.2s;
+        box-shadow: var(--shadow-extruded);
+        transition: all 0.3s ease-out;
+        font-family: var(--font-body);
+        font-size: 15px;
     }
 
-    .btn-primary:hover {
-        background-color: var(--accent-dark);
-        transform: translateY(-2px);
+    .btn-neumorphic:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-extruded-hover);
+        color: var(--text-secondary);
     }
 
-    .visuaĺ img {
+    .btn-neumorphic:active {
+        transform: translateY(0.5px);
+        box-shadow: var(--shadow-inset-small);
+    }
+
+    .image-wrapper {
+        border-radius: var(--border-radius-card);
+        overflow: hidden;
+        box-shadow: var(--shadow-extruded);
+        transition:
+            transform 0.3s ease-out,
+            box-shadow 0.3s ease-out;
+    }
+
+    .image-wrapper:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-extruded-hover);
+    }
+
+    .image-wrapper img {
         width: 100%;
         height: auto;
-        border-radius: 40px; /* Soft Organic */
-        box-shadow: var(--shadow-card);
+        display: block;
     }
 
     @media (max-width: 900px) {

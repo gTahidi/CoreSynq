@@ -3,52 +3,44 @@
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'DM Sans', sans-serif;
 
-  /* Eco-Modern Palette (HomeBiogas Style) */
+  /* Eco-Modern Palette (Restored Warm Colors) */
   --page-bg: #FFFFFF;
+  --card-bg: #FFFFFF;
   --text-primary: #0F3D3E;
   /* Deep Green */
   --text-secondary: #2C5D5E;
   /* Muted Green/Teal */
+
+  /* Solar Yellow Accents */
   --accent-primary: #FFC700;
-  /* Solar Yellow */
   --accent-light: #FFD54F;
   --accent-dark: #FFAB00;
+  --accent-secondary: #38B2AC;
 
-  /* Strategic Grid Background - Watershed Style */
-  .bg-grid {
-    background-size: 40px 40px;
-    background-image:
-      linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-    background-color: #ffffff;
-  }
+  /* Neumorphic Shadows — Adapted for bright White/Warm backgrounds */
+  /* Using a softer, warmer grey for the dark shadow and pure white for light */
+  --shadow-extruded: 8px 8px 16px rgba(210, 215, 220, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.9);
+  --shadow-extruded-hover: 12px 12px 24px rgba(210, 215, 220, 0.7), -12px -12px 24px rgba(255, 255, 255, 1);
+  --shadow-extruded-small: 4px 4px 8px rgba(210, 215, 220, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.9);
 
-  /* Darker grid for light gray sections */
-  .bg-grid-soft {
-    background-size: 40px 40px;
-    background-image:
-      linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-    background-color: #FAFAFA;
-  }
+  --shadow-inset: inset 6px 6px 12px rgba(210, 215, 220, 0.6), inset -6px -6px 12px rgba(255, 255, 255, 0.9);
+  --shadow-inset-deep: inset 10px 10px 20px rgba(210, 215, 220, 0.7), inset -10px -10px 20px rgba(255, 255, 255, 1);
+  --shadow-inset-small: inset 3px 3px 6px rgba(210, 215, 220, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
 
-  .bg-mint-50 {
-    background-color: #e6fcf5 !important;
-    /* Stronger Mint */
-  }
-
-  /* Shadows - Soft & Organic */
+  /* Legacy shadows (for Hero area which has its own dark treatment) */
   --shadow-float: 0 10px 40px -10px rgba(15, 61, 62, 0.15);
   --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
 
-  /* Spacing & Shapes */
+  /* Shapes */
+  --border-radius-card: 32px;
+  --border-radius-btn: 16px;
   --radius-pill: 9999px;
   --radius-organic: 40px;
   --radius-curved-hero: 0 0 80px 80px;
-  /* Specific for Hero bottom */
   --section-padding: 100px 24px;
 }
 
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -60,13 +52,26 @@ body {
   background-color: var(--page-bg);
   color: var(--text-primary);
   line-height: 1.5;
-  /* Tighter leading */
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   font-size: 16px;
-  /* Base 16px, user asked for 20px body but standardizing here first, components override */
   letter-spacing: -0.01em;
-  /* Slight negative tracking globally */
+}
+
+/* Noise Overlay — eliminates flat digital surfaces */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
 }
 
 h1,
@@ -78,9 +83,9 @@ h6 {
   font-family: var(--font-display);
   color: var(--text-primary);
   letter-spacing: -0.02em;
-  /* Tighter headings */
 }
 
+/* ================= LAYOUT ================= */
 .section {
   padding: var(--section-padding);
   opacity: 0;
@@ -99,23 +104,16 @@ h6 {
   padding: 0 24px;
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Neumorphic Utilities */
+/* ================= NEUMORPHIC UTILITIES ================= */
 .neumorphic-card {
   background-color: var(--card-bg);
   border-radius: var(--border-radius-card);
-  box-shadow: var(--shadow-card);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow-extruded);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
 }
 
 .neumorphic-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-extruded-hover);
 }
 
@@ -125,19 +123,51 @@ h6 {
   border-radius: 50%;
 }
 
-/* Button Styles */
+/* ================= BACKGROUNDS ================= */
+/* Restored original logic: distinct grids based on section */
+.bg-grid {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-color: #ffffff;
+}
+
+/* Darker grid for light gray sections */
+.bg-grid-soft {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-color: #FAFAFA;
+}
+
+.bg-mint-50 {
+  background-color: #e6fcf5 !important;
+  /* Adjusting neumorphic shadow colors recursively for mint background */
+  --card-bg: #e6fcf5;
+  --shadow-extruded: 8px 8px 16px rgba(187, 219, 210, 0.6), -8px -8px 16px rgba(255, 255, 255, 0.9);
+  --shadow-extruded-hover: 12px 12px 24px rgba(187, 219, 210, 0.7), -12px -12px 24px rgba(255, 255, 255, 1);
+  --shadow-extruded-small: 4px 4px 8px rgba(187, 219, 210, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.9);
+  --shadow-inset: inset 6px 6px 12px rgba(187, 219, 210, 0.6), inset -6px -6px 12px rgba(255, 255, 255, 0.9);
+  --shadow-inset-deep: inset 10px 10px 20px rgba(187, 219, 210, 0.7), inset -10px -10px 20px rgba(255, 255, 255, 1);
+  --shadow-inset-small: inset 3px 3px 6px rgba(187, 219, 210, 0.5), inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+}
+
+
+/* ================= BUTTONS ================= */
 .btn-primary {
   background-color: var(--card-bg);
   color: var(--text-primary);
   border: none;
-  padding: 12px 32px;
+  padding: 14px 36px;
   border-radius: var(--border-radius-btn);
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   box-shadow: var(--shadow-extruded);
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -151,17 +181,41 @@ h6 {
 }
 
 .btn-primary:active {
-  transform: translateY(1px);
+  transform: translateY(0.5px);
   box-shadow: var(--shadow-inset-small);
 }
 
 .btn-accent {
   background: var(--accent-primary);
-  color: white;
-  box-shadow: 5px 5px 10px rgba(108, 99, 255, 0.4), -5px -5px 10px rgba(255, 255, 255, 0.5);
+  color: var(--text-primary);
+  /* Deep Green text on Solar Yellow */
+  box-shadow: 6px 6px 12px rgba(255, 199, 0, 0.25), -6px -6px 12px rgba(255, 255, 255, 0.8);
 }
 
 .btn-accent:hover {
   background: var(--accent-light);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 16px rgba(255, 199, 0, 0.35), -8px -8px 16px rgba(255, 255, 255, 0.9);
+}
+
+.btn-accent:active {
+  transform: translateY(0.5px);
+  box-shadow: inset 4px 4px 8px rgba(230, 180, 0, 0.2), inset -4px -4px 8px rgba(255, 240, 180, 0.4);
+}
+
+/* ================= SCROLL REVEAL (GSAP Enhanced) ================= */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ================= SMOOTH SCROLL ================= */
+html {
+  scroll-behavior: smooth;
 }

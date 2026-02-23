@@ -6,49 +6,61 @@
             number: "01",
             title: "Ingest",
             desc: "Directly connect to ERPs and procurement systems to gather raw activity data automatically.",
+            icon: "📥",
         },
         {
             number: "02",
             title: "Compute",
             desc: "Apply vetted emission factors to calculate precise carbon footprints across all scopes.",
+            icon: "⚙️",
         },
         {
             number: "03",
             title: "Act",
             desc: "Identify hotspots, model reduction scenarios, and procure high-quality carbon credits.",
+            icon: "🎯",
         },
         {
             number: "04",
             title: "Report",
             desc: "Generate audit-ready reports optimized for CSRD, ISSB, and stakeholder disclosure.",
+            icon: "📋",
         },
     ];
 
     let container;
     let visibleStepIndex = -1;
-    let hasAnimated = false;
 
-    onMount(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting && !hasAnimated) {
-                        hasAnimated = true;
-                        animateSteps();
-                    }
-                });
+    onMount(async () => {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Header animation
+        const header = container.querySelector(".header");
+        gsap.fromTo(
+            header,
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+                scrollTrigger: { trigger: header, start: "top 85%" },
             },
-            { threshold: 0.5 },
         );
 
-        if (container) observer.observe(container);
-
-        return () => observer.disconnect();
+        // Staggered step reveal via ScrollTrigger
+        ScrollTrigger.create({
+            trigger: container,
+            start: "top 60%",
+            onEnter: () => animateSteps(),
+        });
     });
 
     function animateSteps() {
+        if (visibleStepIndex >= 0) return; // already animated
         let current = 0;
-        // Light up the first one immediately
         visibleStepIndex = current;
 
         const interval = setInterval(() => {
@@ -58,7 +70,7 @@
             } else {
                 clearInterval(interval);
             }
-        }, 800);
+        }, 600);
     }
 </script>
 
@@ -73,18 +85,23 @@
         </div>
 
         <div class="timeline-container">
-            <!-- Connecting Line -->
-            <div class="timeline-line"></div>
-            <!-- Active Line Overlay -->
-            <div
-                class="timeline-line active"
-                style="width: {(visibleStepIndex / (steps.length - 1)) * 100}%"
-            ></div>
+            <!-- Inset Track Line -->
+            <div class="timeline-track">
+                <div
+                    class="timeline-track-fill"
+                    style="width: {visibleStepIndex >= 0
+                        ? (visibleStepIndex / (steps.length - 1)) * 100
+                        : 0}%"
+                ></div>
+            </div>
 
             {#each steps as step, i}
                 <div class="timeline-step" class:active={i <= visibleStepIndex}>
-                    <div class="step-marker">{step.number}</div>
+                    <div class="step-marker">
+                        <span class="step-icon">{step.icon}</span>
+                    </div>
                     <div class="step-content">
+                        <span class="step-number">{step.number}</span>
                         <h3 class="step-title">{step.title}</h3>
                         <p class="step-desc">{step.desc}</p>
                     </div>
@@ -97,7 +114,7 @@
 <style>
     .timeline-section {
         padding: 120px 24px;
-        background-color: white;
+        background-color: var(--page-bg);
     }
 
     .content-wrapper {
@@ -116,18 +133,18 @@
     .section-title {
         font-family: var(--font-display, sans-serif);
         font-size: clamp(32px, 4vw, 48px);
-        color: var(--text-primary, #0f3d3e);
+        color: var(--text-primary);
         margin-bottom: 24px;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
     }
 
     .section-subtitle {
         font-family: var(--font-body, sans-serif);
         font-size: 20px;
         line-height: 1.5;
-        color: var(--text-secondary, #4a5568);
+        color: var(--text-secondary);
     }
 
     .timeline-container {
@@ -137,22 +154,26 @@
         padding-top: 20px;
     }
 
-    /* The connecting horizontal line */
-    .timeline-line {
+    /* Neumorphic inset track */
+    .timeline-track {
         position: absolute;
-        top: 50px; /* Aligned with center of markers (60px height -> 30px + padding top 20px = 50px) */
-        left: 11%; /* Approximate center of first marker */
+        top: 55px;
+        left: 11%;
         right: 11%;
-        height: 2px;
-        background-color: #e2e8f0;
+        height: 6px;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-inset-small);
+        border-radius: 9999px;
         z-index: 1;
+        overflow: hidden;
     }
 
-    .timeline-line.active {
-        background-color: var(--accent-primary, #ffc700);
-        z-index: 1;
-        right: auto; /* Width controlled inline */
-        transition: width 0.8s ease;
+    .timeline-track-fill {
+        height: 100%;
+        background: var(--accent-primary);
+        border-radius: 9999px;
+        transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 0 12px rgba(255, 199, 0, 0.4); /* Yellow glow */
     }
 
     .timeline-step {
@@ -160,9 +181,9 @@
         z-index: 2;
         width: 22%;
         text-align: center;
-        opacity: 0.5;
+        opacity: 0.4;
         transform: translateY(10px);
-        transition: all 0.5s ease;
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .timeline-step.active {
@@ -171,44 +192,58 @@
     }
 
     .step-marker {
-        width: 60px;
-        height: 60px;
-        background-color: white;
-        border: 2px solid #e2e8f0;
-        color: var(--text-secondary);
+        width: 64px;
+        height: 64px;
+        background-color: var(--card-bg);
+        box-shadow: var(--shadow-inset-deep);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: var(--font-display, sans-serif);
-        font-weight: 700;
-        font-size: 18px;
-        margin: 0 auto 32px auto;
+        margin: 0 auto 24px auto;
         position: relative;
-        transition: all 0.3s ease;
+        transition: all 0.4s ease-out;
     }
 
     .timeline-step.active .step-marker {
-        background-color: var(--accent-primary, #ffc700);
-        border-color: var(--accent-primary, #ffc700);
-        color: var(--text-primary);
-        box-shadow: 0 0 20px rgba(255, 199, 0, 0.4);
+        box-shadow: var(--shadow-extruded);
+        background: var(--card-bg);
         transform: scale(1.1);
+    }
+
+    .step-icon {
+        font-size: 24px;
+        transition: transform 0.4s ease-out;
+    }
+
+    .timeline-step.active .step-icon {
+        transform: scale(1.15);
+    }
+
+    .step-number {
+        font-family: "DM Sans", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--accent-primary);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 8px;
     }
 
     .step-title {
         font-family: var(--font-display, sans-serif);
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 700;
-        color: var(--text-primary, #0f3d3e);
-        margin-bottom: 16px;
+        color: var(--text-primary);
+        margin-bottom: 12px;
     }
 
     .step-desc {
         font-family: var(--font-body, sans-serif);
-        font-size: 16px;
+        font-size: 15px;
         line-height: 1.5;
-        color: var(--text-secondary, #4a5568);
+        color: var(--text-secondary);
     }
 
     @media (max-width: 768px) {
@@ -218,7 +253,7 @@
             padding-left: 20px;
         }
 
-        .timeline-line {
+        .timeline-track {
             display: none;
         }
 
@@ -227,7 +262,7 @@
             display: flex;
             text-align: left;
             align-items: flex-start;
-            opacity: 1; /* Always visible on mobile */
+            opacity: 1;
             transform: none;
         }
 
@@ -237,7 +272,7 @@
         }
 
         .step-content {
-            padding-top: 8px;
+            padding-top: 4px;
         }
     }
 </style>

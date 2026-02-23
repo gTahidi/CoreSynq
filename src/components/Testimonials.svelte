@@ -1,27 +1,51 @@
 <script>
+    import { onMount } from "svelte";
+
     export let testimonials = [
         {
             quote: "Coresynq has completely transformed how we track Scope 3 emissions. The granularity of the data is unmatched.",
             author: "Wanjiku Kimani",
             role: "Chief Sustainability Officer, AgriTech East Africa",
-            avatar: "/avatars/avatar-1.png", // We'll just use a colored div fallback if image fails
+            initials: "WK",
         },
         {
             quote: "The automated ingestion features alone saved our team hundreds of hours. It's the audit-ready solution we needed.",
             author: "Juma Odhiambo",
             role: "Head of ESG, Regional Logistics",
-            avatar: "/avatars/avatar-2.png",
+            initials: "JO",
         },
         {
             quote: "Finally, a platform that bridges the gap between procurement data and scientific climate modeling.",
             author: "Fatuma Hassan",
             role: "Director of Operations, GreenBuild Kenya",
-            avatar: "/avatars/avatar-3.png",
+            initials: "FH",
         },
     ];
+
+    let sectionEl;
+
+    onMount(async () => {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        gsap.registerPlugin(ScrollTrigger);
+
+        const cards = sectionEl.querySelectorAll(".testimonial-card");
+        gsap.fromTo(
+            cards,
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: "power3.out",
+                stagger: 0.15,
+                scrollTrigger: { trigger: sectionEl, start: "top 80%" },
+            },
+        );
+    });
 </script>
 
-<section class="testimonials-section">
+<section class="testimonials-section" bind:this={sectionEl}>
     <div class="container">
         <div class="header">
             <h2 class="section-title">Trusted by Industry Leaders</h2>
@@ -30,11 +54,11 @@
         <div class="grid">
             {#each testimonials as t, i}
                 <div class="testimonial-card">
-                    <div class="quote-icon">“</div>
+                    <div class="quote-icon">"</div>
                     <p class="quote-text">{t.quote}</p>
                     <div class="author-info">
-                        <div class="avatar-placeholder">
-                            {t.author.charAt(0)}
+                        <div class="avatar-well">
+                            {t.initials}
                         </div>
                         <div class="meta">
                             <div class="author-name">{t.author}</div>
@@ -65,10 +89,10 @@
 
     .section-title {
         font-family: var(--font-display);
-        font-size: 48px;
-        font-weight: 700;
+        font-size: clamp(36px, 4vw, 48px);
+        font-weight: 800;
         color: var(--text-primary);
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
     }
 
     .grid {
@@ -78,21 +102,20 @@
     }
 
     .testimonial-card {
-        background: white;
+        background: var(--card-bg);
         padding: 40px 32px;
-        border-radius: 20px;
-        box-shadow: var(--shadow-card);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: var(--border-radius-card);
+        box-shadow: var(--shadow-extruded);
         display: flex;
         flex-direction: column;
         transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+            transform 0.3s ease-out,
+            box-shadow 0.3s ease-out;
     }
 
     .testimonial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-float);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-extruded-hover);
     }
 
     .quote-icon {
@@ -100,14 +123,14 @@
         line-height: 1;
         color: var(--accent-primary);
         font-family: serif;
-        opacity: 0.3;
+        opacity: 0.4;
         margin-bottom: 16px;
     }
 
     .quote-text {
         font-family: var(--font-body);
-        font-size: 18px;
-        line-height: 1.6;
+        font-size: 17px;
+        line-height: 1.65;
         color: var(--text-secondary);
         flex-grow: 1;
         margin-bottom: 32px;
@@ -119,19 +142,21 @@
         gap: 16px;
     }
 
-    .avatar-placeholder {
+    /* Neumorphic inset avatar well */
+    .avatar-well {
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background: #f0fdf4; /* Mint 50 */
-        color: var(--text-primary);
+        background: var(--card-bg);
+        box-shadow: var(--shadow-inset-deep);
+        color: var(--accent-primary);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 700;
+        font-weight: 800;
         font-family: var(--font-display);
-        font-size: 20px;
-        border: 1px solid #bbf7d0;
+        font-size: 16px;
+        flex-shrink: 0;
     }
 
     .meta {
@@ -148,8 +173,8 @@
 
     .author-role {
         font-family: var(--font-body);
-        font-size: 14px;
-        color: #94a3b8;
+        font-size: 13px;
+        color: var(--text-secondary);
     }
 
     @media (max-width: 900px) {

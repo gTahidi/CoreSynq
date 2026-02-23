@@ -1,4 +1,44 @@
-<section class="stat-cards-section">
+<script>
+    import { onMount } from "svelte";
+
+    let sectionEl;
+
+    onMount(async () => {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        gsap.registerPlugin(ScrollTrigger);
+
+        const cards = sectionEl.querySelectorAll(".stat-card");
+        const header = sectionEl.querySelector(".header");
+
+        gsap.fromTo(
+            header,
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+                scrollTrigger: { trigger: header, start: "top 85%" },
+            },
+        );
+
+        gsap.fromTo(
+            cards,
+            { y: 50, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.7,
+                ease: "power3.out",
+                stagger: 0.15,
+                scrollTrigger: { trigger: cards[0], start: "top 85%" },
+            },
+        );
+    });
+</script>
+
+<section class="stat-cards-section" bind:this={sectionEl}>
     <div class="content-wrapper">
         <div class="header">
             <h2 class="section-title">The Hidden Risk in Your Supply Chain</h2>
@@ -11,6 +51,9 @@
 
         <div class="cards-grid">
             <div class="stat-card">
+                <div class="stat-icon-well">
+                    <span class="stat-icon">📊</span>
+                </div>
                 <div class="stat-value">90<span class="symbol">%</span></div>
                 <div class="stat-label">of Enterprise Emissions</div>
                 <p class="stat-description">
@@ -20,6 +63,9 @@
             </div>
 
             <div class="stat-card">
+                <div class="stat-icon-well">
+                    <span class="stat-icon">✅</span>
+                </div>
                 <div class="stat-value">100<span class="symbol">%</span></div>
                 <div class="stat-label">Audit-Ready Lineage</div>
                 <p class="stat-description">
@@ -29,6 +75,9 @@
             </div>
 
             <div class="stat-card">
+                <div class="stat-icon-well">
+                    <span class="stat-icon">⚡</span>
+                </div>
                 <div class="stat-value">24/7</div>
                 <div class="stat-label">Automated Monitoring</div>
                 <p class="stat-description">
@@ -43,8 +92,7 @@
 <style>
     .stat-cards-section {
         padding: 120px 24px;
-        background-color: #f8f9fa; /* Light Mist */
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        background-color: var(--page-bg);
     }
 
     .content-wrapper {
@@ -62,19 +110,19 @@
 
     .section-title {
         font-family: var(--font-display, sans-serif);
-        font-size: clamp(36px, 4vw, 48px); /* Spec: 48px H2 */
-        color: var(--text-primary, #0f3d3e);
+        font-size: clamp(36px, 4vw, 48px);
+        color: var(--text-primary);
         margin-bottom: 24px;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
     }
 
     .section-subtitle {
         font-family: var(--font-body, sans-serif);
-        font-size: 20px; /* Spec: 20px Body */
+        font-size: 20px;
         line-height: 1.5;
-        color: var(--text-secondary, #4a5568);
+        color: var(--text-secondary);
         max-width: 650px;
         margin: 0 auto;
     }
@@ -86,27 +134,44 @@
     }
 
     .stat-card {
-        background: white;
+        background: var(--card-bg);
         padding: 48px 32px;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        border: 1px solid rgba(0, 0, 0, 0.03);
+        border-radius: var(--border-radius-card);
+        box-shadow: var(--shadow-extruded);
         text-align: center;
         transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+            transform 0.3s ease-out,
+            box-shadow 0.3s ease-out;
     }
 
     .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-extruded-hover);
+    }
+
+    /* Neumorphic icon well */
+    .stat-icon-well {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--card-bg);
+        box-shadow: var(--shadow-inset-deep);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+
+    .stat-icon {
+        font-size: 28px;
+        color: var(--accent-primary); /* Use Solar Yellow for icons */
     }
 
     .stat-value {
         font-family: var(--font-display, sans-serif);
         font-size: clamp(56px, 6vw, 80px);
         font-weight: 800;
-        color: var(--text-primary, #0f3d3e);
+        color: var(--text-primary);
         line-height: 1;
         margin-bottom: 16px;
         letter-spacing: -0.03em;
@@ -115,15 +180,15 @@
     .symbol {
         font-size: 0.5em;
         vertical-align: super;
-        color: var(--accent-primary, #ffc700);
+        color: var(--accent-primary);
         margin-left: 4px;
     }
 
     .stat-label {
         font-family: var(--font-display, sans-serif);
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
-        color: var(--text-primary, #0f3d3e);
+        color: var(--text-primary);
         margin-bottom: 16px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -133,7 +198,7 @@
         font-family: var(--font-body, sans-serif);
         font-size: 16px;
         line-height: 1.6;
-        color: var(--text-secondary, #4a5568);
+        color: var(--text-secondary);
     }
 
     @media (max-width: 1024px) {

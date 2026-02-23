@@ -1,17 +1,60 @@
 <script>
+    import { onMount } from "svelte";
     import UIMockup from "./UIMockup.svelte";
 
     export let title = "Strategic Capability";
     export let description = "Description text goes here.";
-    export let imageSrc = "/assets/placeholder-ui.png"; // Fallback
-    export let mockupType = null; // 'dashboard', 'graph', 'report'
-    export let reverse = false; // Toggle layout direction
+    export let imageSrc = "/assets/placeholder-ui.png";
+    export let mockupType = null;
+    export let reverse = false;
     export let badge = "Feature";
     let className = "";
-    export { className as class }; // Allow standard class attribute
+    export { className as class };
+
+    let sectionEl;
+
+    onMount(async () => {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        gsap.registerPlugin(ScrollTrigger);
+
+        const textEl = sectionEl.querySelector(".text-content");
+        const mediaEl = sectionEl.querySelector(".media-content");
+
+        const textDir = reverse ? 60 : -60;
+        const mediaDir = reverse ? -60 : 60;
+
+        gsap.fromTo(
+            textEl,
+            { x: textDir, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: { trigger: sectionEl, start: "top 75%" },
+            },
+        );
+
+        gsap.fromTo(
+            mediaEl,
+            { x: mediaDir, opacity: 0 },
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: { trigger: sectionEl, start: "top 75%" },
+            },
+        );
+    });
 </script>
 
-<section class="feature-split-section {className}" class:reverse>
+<section
+    class="feature-split-section {className}"
+    class:reverse
+    bind:this={sectionEl}
+>
     <div class="content-wrapper">
         <div class="text-content">
             <span class="feature-badge">{badge}</span>
@@ -32,7 +75,6 @@
                 {:else if mockupType}
                     <UIMockup type={mockupType} />
                 {:else}
-                    <!-- Using a colored placeholder for now if styled image isn't available -->
                     <div class="ui-placeholder">
                         <span class="placeholder-label">UI Mockup: {title}</span
                         >
@@ -46,7 +88,7 @@
 <style>
     .feature-split-section {
         padding: 100px 24px;
-        background-color: white; /* Default, can be overridden */
+        background-color: var(--page-bg);
         overflow: hidden;
     }
 
@@ -73,6 +115,7 @@
         position: relative;
     }
 
+    /* Neumorphic inset badge */
     .feature-badge {
         display: inline-block;
         font-family: var(--font-display, sans-serif);
@@ -80,29 +123,29 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
-        color: var(--accent-primary, #ffc700);
+        color: var(--accent-primary);
         margin-bottom: 24px;
-        background: rgba(15, 61, 62, 0.05); /* Light trace of primary color */
-        padding: 8px 16px;
+        background: var(--card-bg);
+        padding: 8px 20px;
         border-radius: 50px;
-        color: var(--text-primary, #0f3d3e);
+        box-shadow: var(--shadow-inset-small);
     }
 
     .feature-title {
         font-family: var(--font-display, sans-serif);
-        font-size: clamp(36px, 3.5vw, 48px); /* Spec: 48px H2 */
-        font-weight: 700;
-        color: var(--text-primary, #0f3d3e);
+        font-size: clamp(36px, 3.5vw, 48px);
+        font-weight: 800;
+        color: var(--text-primary);
         margin-bottom: 24px;
-        line-height: 1.1;
-        letter-spacing: -0.02em;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
     }
 
     .feature-description {
         font-family: var(--font-body, sans-serif);
-        font-size: 20px; /* Spec: 20px Body */
-        line-height: 1.5;
-        color: var(--text-secondary, #4a5568);
+        font-size: 18px;
+        line-height: 1.6;
+        color: var(--text-secondary);
         margin-bottom: 32px;
     }
 
@@ -113,60 +156,73 @@
         font-family: var(--font-body, sans-serif);
         font-size: 16px;
         font-weight: 700;
-        color: var(--text-primary, #0f3d3e);
+        color: var(--text-primary); /* Use deep green instead of purple */
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        transition: color 0.2s ease;
+        transition: all 0.3s ease-out;
     }
 
     .btn-text:hover {
-        color: var(--accent-primary, #ffc700);
+        color: var(--text-secondary);
+        transform: translateX(4px);
     }
 
     .arrow {
-        transition: transform 0.2s ease;
+        transition: transform 0.3s ease-out;
     }
 
     .btn-text:hover .arrow {
         transform: translateX(4px);
     }
 
-    /* Image / UI Placeholder Styling */
+    /* Neumorphic image container */
     .image-container {
         width: 100%;
         aspect-ratio: 16/10;
-        border-radius: 20px;
-        background: #f1f5f9;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); /* Soft organic shadow */
+        border-radius: var(--border-radius-card);
+        background: var(--card-bg);
+        box-shadow: var(--shadow-extruded);
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.05);
         position: relative;
+        transition:
+            transform 0.3s ease-out,
+            box-shadow 0.3s ease-out;
     }
 
-    /* Remove padding/bg if mockup is present to let it fill space naturally */
+    .image-container:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-extruded-hover);
+    }
+
     .image-container.has-mockup {
         background: transparent;
-        border: none;
         box-shadow: none;
         overflow: visible;
+    }
+
+    .image-container.has-mockup:hover {
+        transform: none;
+        box-shadow: none;
     }
 
     .ui-placeholder {
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #f6f8fb 0%, #e2e8f0 100%);
+        background: var(--card-bg);
+        box-shadow: var(--shadow-inset);
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: var(--border-radius-card);
     }
 
     .placeholder-label {
-        color: #94a3b8;
+        color: var(--text-secondary);
         font-weight: 600;
         font-family: var(--font-display, sans-serif);
     }
