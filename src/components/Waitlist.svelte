@@ -69,7 +69,7 @@
             </div>
             <div class="footer-bottom">
                 <div class="copyright">
-                    © 2025 Coresynq. All rights reserved.
+                    © 2026 Coresynq. All rights reserved.
                 </div>
                 <div class="status-pill">
                     <span class="status-dot"></span>
