@@ -30,9 +30,14 @@
                 Be the first to access Coresynq and transform your ESG strategy.
             </p>
 
-            <form class="waitlist-form" on:submit|preventDefault>
+            <form
+                class="waitlist-form"
+                action="https://formsubmit.co/bryankechy@gmail.com"
+                method="POST"
+            >
                 <input
                     type="email"
+                    name="email"
                     placeholder="Enter your email address"
                     required
                 />
@@ -57,7 +62,7 @@
                     <span class="brand-icon">🌱</span> Coresynq
                 </div>
                 <div class="links">
-                    <a href="/">Contact</a>
+                    <a href="mailto:brian@coresynq.org">Contact</a>
                     <a href="/">Privacy Policy</a>
                     <a href="/">Terms</a>
                 </div>
